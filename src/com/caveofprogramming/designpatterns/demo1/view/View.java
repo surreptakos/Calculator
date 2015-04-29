@@ -139,10 +139,12 @@ public class View extends JFrame implements ActionListener {
 		JButton buttonPressed = (JButton)e.getSource();
 		String buttonText = buttonPressed.getText();
 		String calcText = calcField.getText();
+		
 		if(buttonPressed.equals(equalsButton)) {
 			//fireOperationEvent(new OperationEvent(calcText, "="));
 			fireCalculationEvent(new CalculationEvent(calcText));
 		} else {
+			//it's a number
 			calcField.setText(calcText + buttonText);
 		}
 		
