@@ -24,7 +24,6 @@ public class Application {
 		Controller controller = new Controller(view);
 		
 		view.setCalculationListener(controller);
-		view.setOperationListener(controller);
 	}
 
 }

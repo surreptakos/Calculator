@@ -15,6 +15,7 @@ public class View extends JFrame implements ActionListener {
 
 	private JButton equalsButton;
 	private JButton addButton;
+	private JButton clearButton;
 	private JButton zeroButton;
 	private JButton oneButton;
 	private JButton twoButton;
@@ -29,20 +30,17 @@ public class View extends JFrame implements ActionListener {
 	private JTextField calcField;
 	private JLabel answerField;
 	
-	private double term1;
-	private double term2;
-	private boolean term1Set = false;
-	private boolean term2Set = false;
+	private String opString = "";
 
 
 	private CalculationListener calculationListener;
-	private OperationListener operationListener;
 
 	public View() {
 		super("My Calculator");
 
-		equalsButton = new JButton(" = ");
-		addButton = new JButton(" + ");
+		equalsButton = new JButton("=");
+		addButton = new JButton("+");
+		clearButton = new JButton("C");
 		zeroButton = new JButton("0");
 		oneButton = new JButton("1");
 		twoButton = new JButton("2");
@@ -55,7 +53,7 @@ public class View extends JFrame implements ActionListener {
 		nineButton = new JButton("9");
 		
 		calcField = new JTextField(10);
-		answerField = new JLabel("Output here");
+		answerField = new JLabel("");
 
 		setLayout(new GridBagLayout());
 
@@ -112,11 +110,16 @@ public class View extends JFrame implements ActionListener {
 		gc.gridy = 4;
 		add(equalsButton, gc);
 		
+		gc.gridx = 3;
+		gc.gridy = 4;
+		add(clearButton, gc);
+		
 		gc.gridx = 1;
 		gc.gridy = 5;
 		add(addButton, gc);
 
 		equalsButton.addActionListener(this);
+		clearButton.addActionListener(this);
 		addButton.addActionListener(this);
 		zeroButton.addActionListener(this);
 		oneButton.addActionListener(this);
@@ -129,7 +132,7 @@ public class View extends JFrame implements ActionListener {
 		eightButton.addActionListener(this);
 		nineButton.addActionListener(this);
 		
-		setSize(600, 500);
+		setSize(600, 600);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
@@ -141,11 +144,31 @@ public class View extends JFrame implements ActionListener {
 		String calcText = calcField.getText();
 		
 		if(buttonPressed.equals(equalsButton)) {
-			//fireOperationEvent(new OperationEvent(calcText, "="));
-			fireCalculationEvent(new CalculationEvent(calcText));
-		} else {
-			//it's a number
-			calcField.setText(calcText + buttonText);
+			fireCalculationEvent(new CalculationEvent(calcText, opString));
+			opString = "";
+		} else if (isOperator(buttonText)){
+			//it's an operator
+
+			//will grab what's in the answer field if there's something already there
+			if (answerField.getText() != "") {
+				calcField.setText(answerField.getText());
+				calcText = calcField.getText();
+			}
+
+			if(calcText.length() > 0)
+			{
+				opString = buttonText;
+				calcField.setText(calcText + buttonText);
+			}
+			
+		} else if (isInteger(buttonText)) {
+			if (answerField.getText() != "") {
+				pressClearButton();
+				calcText = "";
+			}
+			calcField.setText(calcText + buttonText);			
+		} else if (buttonPressed.equals(clearButton)) {
+			pressClearButton();
 		}
 		
 	}
@@ -154,24 +177,62 @@ public class View extends JFrame implements ActionListener {
 		this.calculationListener = calculationListener;
 	}
 	
-	public void setOperationListener(OperationListener operationListener) {
-		this.operationListener = operationListener;
-	}
-
 	public void fireCalculationEvent(CalculationEvent event) {
 		if (calculationListener != null) {
 			calculationListener.calculationPerformed(event);
 		}
 	}
 	
-	public void fireOperationEvent(OperationEvent event) {
-		if (operationListener != null) {
-			operationListener.operationPerformed(event);
-		}
-	}
-	
 	public void setAnswerField(String s) {
 		answerField.setText(s);
+	}
+	
+	public void pressClearButton() {
+		calcField.setText("");
+		setAnswerField("");
+		opString = "";	
+	}
+	
+	public boolean isOperator(String str) {
+		if (str == null) {
+			return false;
+		}
+		int length = str.length();
+		if (length != 1) {
+			return false;
+		}
+		
+		char op = str.charAt(0);
+		
+		if (op == '-' || op == '+' || op == 'x' || op == '/') {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static boolean isInteger(String str) {
+		if (str == null) {
+			return false;
+		}
+		int length = str.length();
+		if (length == 0) {
+			return false;
+		}
+		int i = 0;
+		if (str.charAt(0) == '-') {
+			if (length == 1) {
+				return false;
+			}
+			i = 1;
+		}
+		for (; i < length; i++) {
+			char c = str.charAt(i);
+			if (c <= '/' || c >= ':') {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
