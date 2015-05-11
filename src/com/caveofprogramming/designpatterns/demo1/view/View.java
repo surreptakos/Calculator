@@ -12,10 +12,19 @@ import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class View extends JFrame implements ActionListener {
+	
+	
+	public static final char ADD_OP = '+';
+	public static final char SUBTRACT_OP = '-';
+	public static final char MULTIPLY_OP = '*';
+	public static final char DIVIDE_OP = '/';
 
 	private JButton equalsButton;
-	private JButton addButton;
 	private JButton clearButton;
+	private JButton addButton;
+	private JButton subtractButton;
+	private JButton divideButton;
+	private JButton multiplyButton;
 	private JButton zeroButton;
 	private JButton oneButton;
 	private JButton twoButton;
@@ -39,8 +48,11 @@ public class View extends JFrame implements ActionListener {
 		super("My Calculator");
 
 		equalsButton = new JButton("=");
-		addButton = new JButton("+");
 		clearButton = new JButton("C");
+		addButton = new JButton(String.valueOf(ADD_OP));
+		subtractButton = new JButton(String.valueOf(SUBTRACT_OP));
+		divideButton = new JButton(String.valueOf(DIVIDE_OP));
+		multiplyButton = new JButton(String.valueOf(MULTIPLY_OP));
 		zeroButton = new JButton("0");
 		oneButton = new JButton("1");
 		twoButton = new JButton("2");
@@ -58,11 +70,11 @@ public class View extends JFrame implements ActionListener {
 		setLayout(new GridBagLayout());
 
 		GridBagConstraints gc = new GridBagConstraints();
-		gc.gridx = 4;
+		gc.gridx = 5;
 		gc.gridy = 1;
 		add(calcField, gc);
 		
-		gc.gridx = 4;
+		gc.gridx = 5;
 		gc.gridy = 2;
 		add(answerField, gc);
 		
@@ -114,13 +126,28 @@ public class View extends JFrame implements ActionListener {
 		gc.gridy = 4;
 		add(clearButton, gc);
 		
-		gc.gridx = 1;
-		gc.gridy = 5;
+		gc.gridx = 4;
+		gc.gridy = 1;
 		add(addButton, gc);
+		
+		gc.gridx = 4;
+		gc.gridy = 2;
+		add(subtractButton, gc);
+		
+		gc.gridx = 4;
+		gc.gridy = 3;
+		add(multiplyButton, gc);
+		
+		gc.gridx = 4;
+		gc.gridy = 4;
+		add(divideButton, gc);
 
 		equalsButton.addActionListener(this);
 		clearButton.addActionListener(this);
 		addButton.addActionListener(this);
+		subtractButton.addActionListener(this);
+		multiplyButton.addActionListener(this);
+		divideButton.addActionListener(this);
 		zeroButton.addActionListener(this);
 		oneButton.addActionListener(this);
 		twoButton.addActionListener(this);
@@ -145,7 +172,7 @@ public class View extends JFrame implements ActionListener {
 		
 		if(buttonPressed.equals(equalsButton)) {
 			fireCalculationEvent(new CalculationEvent(calcText, opString));
-			opString = "";
+			//opString = "";
 		} else if (isOperator(buttonText)){
 			//it's an operator
 
@@ -153,6 +180,7 @@ public class View extends JFrame implements ActionListener {
 			if (answerField.getText() != "") {
 				calcField.setText(answerField.getText());
 				calcText = calcField.getText();
+				setAnswerField("");
 			}
 
 			if(calcText.length() > 0)
@@ -204,7 +232,7 @@ public class View extends JFrame implements ActionListener {
 		
 		char op = str.charAt(0);
 		
-		if (op == '-' || op == '+' || op == 'x' || op == '/') {
+		if (op == SUBTRACT_OP || op == ADD_OP || op == MULTIPLY_OP || op == DIVIDE_OP) {
 			return true;
 		}
 		

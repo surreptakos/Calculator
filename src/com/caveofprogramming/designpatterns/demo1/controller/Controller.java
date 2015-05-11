@@ -30,7 +30,7 @@ public class Controller implements CalculationListener {
 			case "-":
 				answer = term1 - term2;
 				break;
-			case "x":
+			case "*":
 				answer = term1 * term2;
 				break;
 			case "/":
