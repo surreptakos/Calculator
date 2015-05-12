@@ -25,6 +25,7 @@ public class View extends JFrame implements ActionListener {
 	private JButton subtractButton;
 	private JButton divideButton;
 	private JButton multiplyButton;
+	private JButton decimalButton;
 	private JButton zeroButton;
 	private JButton oneButton;
 	private JButton twoButton;
@@ -53,6 +54,7 @@ public class View extends JFrame implements ActionListener {
 		subtractButton = new JButton(String.valueOf(SUBTRACT_OP));
 		divideButton = new JButton(String.valueOf(DIVIDE_OP));
 		multiplyButton = new JButton(String.valueOf(MULTIPLY_OP));
+		decimalButton = new JButton(".");
 		zeroButton = new JButton("0");
 		oneButton = new JButton("1");
 		twoButton = new JButton("2");
@@ -141,12 +143,17 @@ public class View extends JFrame implements ActionListener {
 		gc.gridx = 4;
 		gc.gridy = 4;
 		add(divideButton, gc);
+		
+		gc.gridx = 1;
+		gc.gridy = 5;
+		add(decimalButton, gc);
 
 		equalsButton.addActionListener(this);
 		clearButton.addActionListener(this);
 		addButton.addActionListener(this);
 		subtractButton.addActionListener(this);
 		multiplyButton.addActionListener(this);
+		decimalButton.addActionListener(this);
 		divideButton.addActionListener(this);
 		zeroButton.addActionListener(this);
 		oneButton.addActionListener(this);
@@ -189,7 +196,7 @@ public class View extends JFrame implements ActionListener {
 				calcField.setText(calcText + buttonText);
 			}
 			
-		} else if (isInteger(buttonText)) {
+		} else if (isInteger(buttonText) || buttonPressed.equals(decimalButton)) {
 			if (answerField.getText() != "") {
 				pressClearButton();
 				calcText = "";
