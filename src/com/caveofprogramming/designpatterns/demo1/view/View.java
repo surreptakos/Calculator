@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 @SuppressWarnings("serial")
 public class View extends JFrame implements ActionListener {
 	
-	
+	public static final int WHUT = 9;
 	public static final char ADD_OP = '+';
 	public static final char SUBTRACT_OP = '-';
 	public static final char MULTIPLY_OP = '*';
