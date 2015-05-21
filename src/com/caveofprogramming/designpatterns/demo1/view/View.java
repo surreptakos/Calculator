@@ -182,7 +182,7 @@ public class View extends JFrame implements ActionListener {
 			//opString = "";
 		} else if (isOperator(buttonText)){
 			//it's an operator
-
+			//adding a comment to make a commit for beeminder bc I was working late and then lifted and helped Ana and got into a fight with her and yay
 			//will grab what's in the answer field if there's something already there
 			if (answerField.getText() != "") {
 				calcField.setText(answerField.getText());

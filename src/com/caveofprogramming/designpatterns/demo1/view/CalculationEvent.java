@@ -1,5 +1,5 @@
 package com.caveofprogramming.designpatterns.demo1.view;
-
+//adding a comment to make a commit for beeminder bc I was working late and then lifted and helped Ana and got into a fight with her and yay
 
 public class CalculationEvent {
 	private double term1;
